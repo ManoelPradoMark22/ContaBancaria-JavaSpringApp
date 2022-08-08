@@ -33,6 +33,8 @@ public class ContaSolidariaController {
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<String> inserirContaSolidaria(@RequestBody ContaSolidaria objContaSolidaria) {
 		try {
+			if(contaSolidariaService.checkExistingAccount(objContaSolidaria.getContaCorrente())) throw new Exception("Essa conta já foi cadastrada como conta solidária!"); 
+			
 			ContaSolidaria contaSolidaria = contaSolidariaService.salvar(objContaSolidaria);
 			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(contaSolidaria.getIdContaSolidaria()).toUri();
 			return ResponseEntity.created(uri).build();

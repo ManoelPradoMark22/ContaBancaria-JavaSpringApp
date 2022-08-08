@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.entity.ContaSolidaria;
 import com.accenture.banco.repository.ContaSolidariaRepo;
 
@@ -20,5 +21,9 @@ public class ContaSolidariaService {
 	
 	public ContaSolidaria salvar(ContaSolidaria contaSolidaria) {
 		return contaSolidariaRepo.save(contaSolidaria);
+	}
+	
+	public Boolean checkExistingAccount(ContaCorrente contaCorrente){
+		return contaSolidariaRepo.existsByContaCorrente(contaCorrente);
 	}
 }
