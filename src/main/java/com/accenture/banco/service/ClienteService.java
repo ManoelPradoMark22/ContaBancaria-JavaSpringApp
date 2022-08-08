@@ -19,8 +19,6 @@ public class ClienteService {
 	}
 	
 	public Cliente salvar(Cliente cliente) {
-		System.out.println(clienteRepo.existsByClienteCPF(cliente.getClienteCPF()));
-		//System.out.println(clienteRepo.findByClienteCPF(cliente.getClienteCPF()) ? "já existe" : "não existe" );
 		return clienteRepo.save(cliente);
 	}
 	
