@@ -1,7 +1,9 @@
 package com.accenture.banco.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class ClienteService {
 	
 	public List<Cliente> listaTodosClientes(){
 		return (List<Cliente>) clienteRepo.findAll();
+	}
+	
+	public Cliente buscarClientePorCpf(String cpf) throws ObjectNotFoundException{
+		Optional<Cliente> cliente = clienteRepo.findByClienteCPF(cpf);
+		return cliente.orElseThrow(() -> new ObjectNotFoundException(null, "Cliente não encontrado!"));
 	}
 	
 	public Cliente salvar(Cliente cliente) {
