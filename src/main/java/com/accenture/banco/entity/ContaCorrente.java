@@ -19,7 +19,7 @@ public class ContaCorrente {
 	private double contaCorrenteSaldo = 0.00;
 	
 	@ManyToOne
-	@JoinColumn(name = "idCliente")
+	@JoinColumn(name = "idCliente", nullable = false)
 	private Cliente cliente;
 
 	public Integer getIdContaCorrente() {

@@ -25,7 +25,7 @@ public class Cliente {
 	private String styleId;
 	
 	@ManyToOne
-	@JoinColumn(name = "idAgencia")
+	@JoinColumn(name = "idAgencia", nullable = false)
 	private Agencia agencia;
 
 	public Integer getIdCliente() {
