@@ -1,0 +1,58 @@
+package com.accenture.banco.controller;
+
+import java.net.URI;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.accenture.banco.entity.Cliente;
+import com.accenture.banco.service.ClienteService;
+
+@RestController
+@RequestMapping("/cliente")
+public class ClienteController {
+	
+	@Autowired
+	private ClienteService clienteService;
+	
+	//Listar Clientes
+	@RequestMapping(method=RequestMethod.GET)
+	public ResponseEntity<List<Cliente>> listarClientes(){
+		List<Cliente> clientes = clienteService.listaTodosClientes();
+		//se a requisicao for ok() 200 - entao retornamos alunos no body
+		return ResponseEntity.ok().body(clientes);
+	}	
+	
+	//Cadastrar Cliente
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<String> inserircliente(@RequestBody Cliente objcliente) {
+		if (clienteService.checkExistingCpf(objcliente.getClienteCPF())) {
+			return ResponseEntity.badRequest().body("Cpf Já existente!");
+		}
+		
+		if (!clienteService.isValidCpf(objcliente.getClienteCPF())) {
+			return ResponseEntity.badRequest().body("Cpf inválido!");
+		}
+		
+		Cliente cliente = clienteService.salvar(objcliente);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getIdCliente()).toUri();
+		return ResponseEntity.created(uri).build();
+		
+	}
+	
+	/*
+	@RequestMapping(method =  RequestMethod.POST)
+    public Agencia Post(@Validated @RequestBody Agencia agencia)
+    {
+        return agenciaService.salvar(agencia);
+    }
+	*/
+	
+}
