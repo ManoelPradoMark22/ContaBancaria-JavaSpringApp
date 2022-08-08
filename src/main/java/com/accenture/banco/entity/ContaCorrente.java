@@ -15,7 +15,7 @@ public class ContaCorrente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idContaCorrente;
 	
-	@Column
+	@Column(columnDefinition = "DECIMAL(11,2) DEFAULT 0.00")
 	private double contaCorrenteSaldo = 0.00;
 	
 	@ManyToOne

@@ -13,38 +13,37 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.accenture.banco.entity.Cliente;
+import com.accenture.banco.entity.ContaCorrente;
+import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.service.ClienteService;
+import com.accenture.banco.service.ContaCorrenteService;
+import com.accenture.banco.service.ExtratoService;
 
 @RestController
-@RequestMapping("/cliente")
-public class ClienteController {
+@RequestMapping("/extrato")
+public class ExtratoController {
 	
 	@Autowired
-	private ClienteService clienteService;
+	private ExtratoService extratoService;
 	
-	//Listar Clientes
+	//Listar Extratos
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Cliente>> listarClientes(){
-		List<Cliente> clientes = clienteService.listaTodosClientes();
+	public ResponseEntity<List<Extrato>> listarExtratos(){
+		List<Extrato> extratos = extratoService.listaTodosExtratos();
 		//se a requisicao for ok() 200 - entao retornamos alunos no body
-		return ResponseEntity.ok().body(clientes);
-	}	
+		return ResponseEntity.ok().body(extratos);
+	}
 	
 	//Cadastrar Cliente
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<String> inserircliente(@RequestBody Cliente objcliente) {
+	public ResponseEntity<String> inserirExtrato(@RequestBody Extrato objextrato) {
 		try {
-			if (clienteService.checkExistingCpf(objcliente.getClienteCPF())) throw new Exception("Cpf Já existente!");
-			
-			if (!clienteService.isValidCpf(objcliente.getClienteCPF())) throw new Exception("Cpf inválido!");
-			
-			Cliente cliente = clienteService.salvar(objcliente);
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getIdCliente()).toUri();
+			Extrato extrato = extratoService.salvar(objextrato);
+			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(extrato.getIdExtrato()).toUri();
 			return ResponseEntity.created(uri).build();
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-		
 	}
 	
 	/*

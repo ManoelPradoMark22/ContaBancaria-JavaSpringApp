@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 //@Entity
 public class ContaSolidaria {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer idContaSolidaria;
 	
 	private String nomeCausa;
