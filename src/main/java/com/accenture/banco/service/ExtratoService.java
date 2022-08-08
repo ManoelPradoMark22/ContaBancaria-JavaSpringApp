@@ -5,9 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.accenture.banco.entity.Cliente;
 import com.accenture.banco.entity.Extrato;
-import com.accenture.banco.repository.ClienteRepo;
 import com.accenture.banco.repository.ExtratoRepo;
 
 @Service

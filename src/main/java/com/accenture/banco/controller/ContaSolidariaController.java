@@ -11,30 +11,30 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.accenture.banco.entity.Extrato;
-import com.accenture.banco.service.ExtratoService;
+import com.accenture.banco.entity.ContaSolidaria;
+import com.accenture.banco.service.ContaSolidariaService;
 
 @RestController
-@RequestMapping("/extrato")
-public class ExtratoController {
+@RequestMapping("/contasolidaria")
+public class ContaSolidariaController {
 	
 	@Autowired
-	private ExtratoService extratoService;
+	private ContaSolidariaService contaSolidariaService;
 	
-	//Listar Extratos
+	//Listar Contas Solidarias
 	@RequestMapping(method=RequestMethod.GET)
-	public ResponseEntity<List<Extrato>> listarExtratos(){
-		List<Extrato> extratos = extratoService.listaTodosExtratos();
+	public ResponseEntity<List<ContaSolidaria>> listarContasSolidarias(){
+		List<ContaSolidaria> contasSolidarias = contaSolidariaService.listarTodasContasSolidarias();
 		//se a requisicao for ok() 200 - entao retornamos alunos no body
-		return ResponseEntity.ok().body(extratos);
+		return ResponseEntity.ok().body(contasSolidarias);
 	}
 	
-	//Cadastrar Cliente
+	//Cadastrar Conta Solidaria
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<String> inserirExtrato(@RequestBody Extrato objextrato) {
+	public ResponseEntity<String> inserirContaSolidaria(@RequestBody ContaSolidaria objContaSolidaria) {
 		try {
-			Extrato extrato = extratoService.salvar(objextrato);
-			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(extrato.getIdExtrato()).toUri();
+			ContaSolidaria contaSolidaria = contaSolidariaService.salvar(objContaSolidaria);
+			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(contaSolidaria.getIdContaSolidaria()).toUri();
 			return ResponseEntity.created(uri).build();
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
