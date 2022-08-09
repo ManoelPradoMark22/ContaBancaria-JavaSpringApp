@@ -7,6 +7,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accenture.banco.entity.Cliente;
 import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.repository.ContaCorrenteRepo;
 import com.accenture.banco.util.Valor;
@@ -19,6 +20,11 @@ public class ContaCorrenteService {
 	
 	public List<ContaCorrente> listaTodasContas(){
 		return (List<ContaCorrente>) contaCorrenteRepo.findAll();
+	}
+	
+	public Optional<List<ContaCorrente>> buscarContasPorCpf(Cliente cliente) throws ObjectNotFoundException{
+		Optional<List<ContaCorrente>> contaCorrente = contaCorrenteRepo.findAllByCliente(cliente);
+		return Optional.ofNullable(contaCorrente).orElseThrow(() -> new ObjectNotFoundException(null, "Contas não encontradas para o cpf indicado!"));
 	}
 	
 	public ContaCorrente salvar(ContaCorrente contacorrente) {
