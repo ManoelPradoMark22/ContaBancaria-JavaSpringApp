@@ -43,7 +43,7 @@ public class ContaCorrenteController {
 	public ResponseEntity<Optional> buscaPorCpf(@PathVariable String cpf) throws ObjectNotFoundException{
 		try {
 			Cliente cliente = clienteService.buscarClientePorCpf(cpf);
-			Optional<List<ContaCorrente>> contasCorrentes = contaCorrenteService.buscarContasPorCpf(cliente);
+			Optional<List<ContaCorrente>> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
 			return ResponseEntity.ok().body(Optional.ofNullable(contasCorrentes));
 		}catch(ObjectNotFoundException e){
 			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
@@ -62,9 +62,17 @@ public class ContaCorrenteController {
 	
 	//deposito
 	@RequestMapping(value="/deposito/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> alterar(@RequestBody Valor objBody, @PathVariable Integer id) {
+	public ResponseEntity<Void> depositar(@RequestBody Valor objBody, @PathVariable Integer id) {
 		objBody.setId(id);
 		contaCorrenteService.deposito(objBody);
+		return ResponseEntity.noContent().build();
+	}
+	
+	//saque
+	@RequestMapping(value="/saque/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<Void> sacar(@RequestBody Valor objBody, @PathVariable Integer id) {
+		objBody.setId(id);
+		contaCorrenteService.saque(objBody);
 		return ResponseEntity.noContent().build();
 	}
 	

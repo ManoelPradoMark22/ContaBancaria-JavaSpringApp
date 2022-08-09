@@ -22,7 +22,7 @@ public class ContaCorrenteService {
 		return (List<ContaCorrente>) contaCorrenteRepo.findAll();
 	}
 	
-	public Optional<List<ContaCorrente>> buscarContasPorCpf(Cliente cliente) throws ObjectNotFoundException{
+	public Optional<List<ContaCorrente>> buscarContasPorCliente(Cliente cliente) throws ObjectNotFoundException{
 		Optional<List<ContaCorrente>> contaCorrente = contaCorrenteRepo.findAllByCliente(cliente);
 		return Optional.ofNullable(contaCorrente).orElseThrow(() -> new ObjectNotFoundException(null, "Contas não encontradas para o cpf indicado!"));
 	}
@@ -39,6 +39,12 @@ public class ContaCorrenteService {
 	public ContaCorrente deposito(Valor objBody) {
 		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
 		contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() + objBody.getValor());
+		return salvar(contaCorrente); 
+	}
+	
+	public ContaCorrente saque(Valor objBody) {
+		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
+		contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() - objBody.getValor());
 		return salvar(contaCorrente); 
 	}
 }
