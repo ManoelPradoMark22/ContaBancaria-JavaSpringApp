@@ -1,10 +1,13 @@
 package com.accenture.banco.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accenture.banco.entity.Cliente;
 import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.repository.ExtratoRepo;
@@ -29,5 +32,10 @@ public class ExtratoService {
 		extrato.setOperacao(operacao);
 		extrato.setValorOperacao(valor);
 		salvar(extrato);
+	}
+	
+	public Optional<List<Extrato>> buscarExtratosPorConta(ContaCorrente contaCorrente) throws ObjectNotFoundException{
+		Optional<List<Extrato>> extratos = extratoRepo.findAllByContaCorrente(contaCorrente);
+		return Optional.ofNullable(extratos).orElseThrow(() -> new ObjectNotFoundException(null, "Extratos não encontradas para a conta indicada!"));
 	}
 }

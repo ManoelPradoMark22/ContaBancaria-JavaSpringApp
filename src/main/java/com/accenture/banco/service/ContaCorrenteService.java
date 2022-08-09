@@ -7,6 +7,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 
 import com.accenture.banco.entity.Cliente;
@@ -43,50 +44,66 @@ public class ContaCorrenteService {
 		return contaCorrente.orElseThrow(() -> new ObjectNotFoundException(null, "Conta não encontrada!"));
 	}
 	
-	public Boolean deposito(Valor objBody){
+	public String formatarNumero(double numero) {
+	       return new DecimalFormat("#,##0.00").format(numero);
+	     }
+	
+	public String deposito(Valor objBody){
 		try {
 			ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
-			contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() + objBody.getValor());
+			double valorDepositado = objBody.getValor();
+			double novoSaldo = contaCorrente.getContaCorrenteSaldo() + valorDepositado;
+			contaCorrente.setContaCorrenteSaldo(novoSaldo);
 			salvar(contaCorrente);
 			
-			extratoService.gerarExtrato(contaCorrente, "deposito", objBody.getValor());
+			extratoService.gerarExtrato(contaCorrente, "deposito", valorDepositado);
 			
-			return true;
+			return "Depósito de 'R$" + valorDepositado +"' efetuado com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
 		}catch(Exception e) {
-			return false;
+			return e.getMessage();
 		}
 	}
 	
-	public Boolean transferencia(Valor objBody, int idDestino) {
-		ContaCorrente contaCorrenteOrigem = buscarContaPorId(objBody.getId());
-		ContaCorrente contaCorrenteDestino = buscarContaPorId(idDestino);
-		double valorEmContaOrigem = contaCorrenteOrigem.getContaCorrenteSaldo();
-		double valorTransf = objBody.getValor();
-		if(valorEmContaOrigem<valorTransf) {
-			return false;
-		}else {
-			contaCorrenteDestino.setContaCorrenteSaldo(contaCorrenteDestino.getContaCorrenteSaldo() + valorTransf);
-			salvar(contaCorrenteDestino);
-			contaCorrenteOrigem.setContaCorrenteSaldo(valorEmContaOrigem - valorTransf);
-			salvar(contaCorrenteOrigem);
-			
-			extratoService.gerarExtrato(contaCorrenteOrigem, "transferencia", valorTransf);
-			
-			return true;
+	public String transferencia(Valor objBody, int idDestino) {		
+		try {
+			ContaCorrente contaCorrenteOrigem = buscarContaPorId(objBody.getId());
+			ContaCorrente contaCorrenteDestino = buscarContaPorId(idDestino);
+			double valorEmContaOrigem = contaCorrenteOrigem.getContaCorrenteSaldo();
+			double valorTransf = objBody.getValor();
+			if(valorEmContaOrigem<valorTransf) {
+				return "Saldo insuficiente para a transferência! Seu saldo é: R$" + valorEmContaOrigem;
+			}else {
+				contaCorrenteDestino.setContaCorrenteSaldo(contaCorrenteDestino.getContaCorrenteSaldo() + valorTransf);
+				salvar(contaCorrenteDestino);
+				double novoSaldo = valorEmContaOrigem - valorTransf;
+				contaCorrenteOrigem.setContaCorrenteSaldo(novoSaldo);
+				salvar(contaCorrenteOrigem);
+				
+				extratoService.gerarExtrato(contaCorrenteOrigem, "transferencia", valorTransf);
+				
+				return "Tranferência de 'R$" + valorTransf +"' efetuada com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
+			}
+		}catch(Exception e) {
+			return e.getMessage();
 		}
 	}
 	
-	public Boolean saque(Valor objBody) {
-		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
-		double valorEmConta = contaCorrente.getContaCorrenteSaldo();
-		double valorSaque = objBody.getValor();
-		if(valorEmConta<valorSaque) {
-			return false;
-		}else {
-			contaCorrente.setContaCorrenteSaldo(valorEmConta - valorSaque);
-			salvar(contaCorrente);
-			extratoService.gerarExtrato(contaCorrente, "saque", valorSaque);
-			return true;
+	public String saque(Valor objBody) {
+		try {
+			ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
+			double valorEmConta = contaCorrente.getContaCorrenteSaldo();
+			double valorSaque = objBody.getValor();
+			if(valorEmConta<valorSaque) {
+				return "Saldo insuficiente para o saque! Seu saldo é: R$" + valorEmConta;
+			}else {
+				double novoSaldo = valorEmConta - valorSaque;
+				contaCorrente.setContaCorrenteSaldo(novoSaldo);
+				salvar(contaCorrente);
+				extratoService.gerarExtrato(contaCorrente, "saque", valorSaque);
+				return "Saque de 'R$" + valorSaque +"' efetuado com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
+			}
+		}catch(Exception e) {
+			return e.getMessage();
 		}
 	}
 }

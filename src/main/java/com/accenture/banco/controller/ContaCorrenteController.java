@@ -66,8 +66,8 @@ public class ContaCorrenteController {
 		try {
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(id);
-			Boolean result = contaCorrenteService.deposito(objBody);
-			return result ? ResponseEntity.ok().body("Sucesso ao depositar") : ResponseEntity.ok().body("Falha ao depositar");
+			String result = contaCorrenteService.deposito(objBody);
+			return ResponseEntity.ok().body(result);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -79,8 +79,8 @@ public class ContaCorrenteController {
 		try {
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(idOrigem);
-			Boolean result = contaCorrenteService.transferencia(objBody, idDestino);
-			return result ? ResponseEntity.ok().body("Transferência Efetuada com sucesso!") : ResponseEntity.ok().body("Saldo insuficiente!");
+			String result = contaCorrenteService.transferencia(objBody, idDestino);
+			return ResponseEntity.ok().body(result);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -92,8 +92,8 @@ public class ContaCorrenteController {
 		try{
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(id);
-			Boolean result = contaCorrenteService.saque(objBody);
-			return result ? ResponseEntity.ok().body("Saque Efetuado com sucesso!") : ResponseEntity.ok().body("Saldo insuficiente!");
+			String result = contaCorrenteService.saque(objBody);
+			return ResponseEntity.ok().body(result);
 		}catch(NumberFormatException e){
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}catch(Exception e){
