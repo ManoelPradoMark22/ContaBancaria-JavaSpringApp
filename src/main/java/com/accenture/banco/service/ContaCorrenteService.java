@@ -7,9 +7,13 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 import com.accenture.banco.entity.Cliente;
 import com.accenture.banco.entity.ContaCorrente;
+import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.repository.ContaCorrenteRepo;
+import com.accenture.banco.repository.ExtratoRepo;
 import com.accenture.banco.util.Valor;
 
 @Service
@@ -17,6 +21,9 @@ public class ContaCorrenteService {
 	
 	@Autowired
 	private ContaCorrenteRepo contaCorrenteRepo;
+	
+	@Autowired
+	private ExtratoService extratoService;
 	
 	public List<ContaCorrente> listaTodasContas(){
 		return (List<ContaCorrente>) contaCorrenteRepo.findAll();
@@ -36,24 +43,35 @@ public class ContaCorrenteService {
 		return contaCorrente.orElseThrow(() -> new ObjectNotFoundException(null, "Conta não encontrada!"));
 	}
 	
-	public ContaCorrente deposito(Valor objBody){
-		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
-		contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() + objBody.getValor());
-		return salvar(contaCorrente);
+	public Boolean deposito(Valor objBody){
+		try {
+			ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
+			contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() + objBody.getValor());
+			salvar(contaCorrente);
+			
+			extratoService.gerarExtrato(contaCorrente, "deposito", objBody.getValor());
+			
+			return true;
+		}catch(Exception e) {
+			return false;
+		}
 	}
 	
 	public Boolean transferencia(Valor objBody, int idDestino) {
 		ContaCorrente contaCorrenteOrigem = buscarContaPorId(objBody.getId());
 		ContaCorrente contaCorrenteDestino = buscarContaPorId(idDestino);
 		double valorEmContaOrigem = contaCorrenteOrigem.getContaCorrenteSaldo();
-		double valorSaque = objBody.getValor();
-		if(valorEmContaOrigem<valorSaque) {
+		double valorTransf = objBody.getValor();
+		if(valorEmContaOrigem<valorTransf) {
 			return false;
 		}else {
-			contaCorrenteDestino.setContaCorrenteSaldo(contaCorrenteDestino.getContaCorrenteSaldo() + valorSaque);
+			contaCorrenteDestino.setContaCorrenteSaldo(contaCorrenteDestino.getContaCorrenteSaldo() + valorTransf);
 			salvar(contaCorrenteDestino);
-			contaCorrenteOrigem.setContaCorrenteSaldo(valorEmContaOrigem - valorSaque);
+			contaCorrenteOrigem.setContaCorrenteSaldo(valorEmContaOrigem - valorTransf);
 			salvar(contaCorrenteOrigem);
+			
+			extratoService.gerarExtrato(contaCorrenteOrigem, "transferencia", valorTransf);
+			
 			return true;
 		}
 	}
@@ -67,6 +85,7 @@ public class ContaCorrenteService {
 		}else {
 			contaCorrente.setContaCorrenteSaldo(valorEmConta - valorSaque);
 			salvar(contaCorrente);
+			extratoService.gerarExtrato(contaCorrente, "saque", valorSaque);
 			return true;
 		}
 	}

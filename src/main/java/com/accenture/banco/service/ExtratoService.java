@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.repository.ExtratoRepo;
 
@@ -20,5 +21,13 @@ public class ExtratoService {
 	
 	public Extrato salvar(Extrato extrato) {
 		return extratoRepo.save(extrato);
+	}
+	
+	public void gerarExtrato(ContaCorrente contaCorrente, String operacao, double valor) {
+		Extrato extrato = new Extrato();
+		extrato.setContaCorrente(contaCorrente);
+		extrato.setOperacao(operacao);
+		extrato.setValorOperacao(valor);
+		salvar(extrato);
 	}
 }

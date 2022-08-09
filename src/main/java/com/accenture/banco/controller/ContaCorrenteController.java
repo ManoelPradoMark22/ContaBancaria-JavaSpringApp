@@ -66,8 +66,8 @@ public class ContaCorrenteController {
 		try {
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(id);
-			contaCorrenteService.deposito(objBody);
-			return ResponseEntity.ok().body("Sucesso ao depositar");
+			Boolean result = contaCorrenteService.deposito(objBody);
+			return result ? ResponseEntity.ok().body("Sucesso ao depositar") : ResponseEntity.ok().body("Falha ao depositar");
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
