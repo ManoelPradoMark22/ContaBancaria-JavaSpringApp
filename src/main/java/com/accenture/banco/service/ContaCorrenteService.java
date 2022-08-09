@@ -42,6 +42,22 @@ public class ContaCorrenteService {
 		return salvar(contaCorrente);
 	}
 	
+	public Boolean transferencia(Valor objBody, int idDestino) {
+		ContaCorrente contaCorrenteOrigem = buscarContaPorId(objBody.getId());
+		ContaCorrente contaCorrenteDestino = buscarContaPorId(idDestino);
+		double valorEmContaOrigem = contaCorrenteOrigem.getContaCorrenteSaldo();
+		double valorSaque = objBody.getValor();
+		if(valorEmContaOrigem<valorSaque) {
+			return false;
+		}else {
+			contaCorrenteDestino.setContaCorrenteSaldo(contaCorrenteDestino.getContaCorrenteSaldo() + valorSaque);
+			salvar(contaCorrenteDestino);
+			contaCorrenteOrigem.setContaCorrenteSaldo(valorEmContaOrigem - valorSaque);
+			salvar(contaCorrenteOrigem);
+			return true;
+		}
+	}
+	
 	public Boolean saque(Valor objBody) {
 		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
 		double valorEmConta = contaCorrente.getContaCorrenteSaldo();
