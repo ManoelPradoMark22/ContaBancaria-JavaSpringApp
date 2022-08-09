@@ -1,5 +1,6 @@
 package com.accenture.banco.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.repository.ContaCorrenteRepo;
 import com.accenture.banco.repository.ExtratoRepo;
+import com.accenture.banco.util.FullBalance;
 import com.accenture.banco.util.Valor;
 
 @Service
@@ -50,6 +52,26 @@ public class ContaCorrenteService {
 			saldo += conta.getContaCorrenteSaldo();
 		}
 		return saldo;
+	}
+	
+	public FullBalance getFullBalance(List<ContaCorrente> lista) {
+		double saldo=0;
+		List<ContaCorrente> contaCorr = new ArrayList<ContaCorrente>();
+		
+		for(ContaCorrente conta : lista) {
+			saldo += conta.getContaCorrenteSaldo();
+			ContaCorrente c = new ContaCorrente();
+			c.setContaCorrenteSaldo(conta.getContaCorrenteSaldo());
+			c.setIdContaCorrente(conta.getIdContaCorrente());
+			contaCorr.add(c);
+		}
+		
+		FullBalance fullbal = new FullBalance();
+		fullbal.setValorTotal(saldo);
+		fullbal.setLista(contaCorr);
+		
+		
+		return fullbal;
 	}
 	
 	public String formatarNumero(double numero) {

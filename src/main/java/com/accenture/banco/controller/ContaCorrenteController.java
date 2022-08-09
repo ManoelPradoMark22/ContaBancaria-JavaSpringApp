@@ -18,6 +18,7 @@ import com.accenture.banco.entity.Cliente;
 import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.service.ClienteService;
 import com.accenture.banco.service.ContaCorrenteService;
+import com.accenture.banco.util.FullBalance;
 import com.accenture.banco.util.Valor;
 
 @RestController
@@ -66,13 +67,28 @@ public class ContaCorrenteController {
 		}
 	}
 	
-	//Balanço da(s) conta(s)
-	@RequestMapping(value="/balance/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Optional> getBalance(@PathVariable int id) throws ObjectNotFoundException{
+	//Balanço da(s) conta(s) - por clientId
+	@RequestMapping(value="/balance/{idClient}", method = RequestMethod.GET)
+	public ResponseEntity<Optional> getBalance(@PathVariable int idClient) throws ObjectNotFoundException{
 		try {
-			Cliente cliente = clienteService.buscarClientePorId(id);
+			Cliente cliente = clienteService.buscarClientePorId(idClient);
 			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
 			double balance = contaCorrenteService.getBalance(contasCorrentes);
+			return ResponseEntity.ok().body(Optional.ofNullable(balance));
+		}catch(ObjectNotFoundException e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}catch(Exception e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}
+	}
+	
+	//Balanço Completo da(s) conta(s) - por clientId
+	@RequestMapping(value="/fullbalance/{idClient}", method = RequestMethod.GET)
+	public ResponseEntity<Optional> getFullBalance(@PathVariable int idClient) throws ObjectNotFoundException{
+		try {
+			Cliente cliente = clienteService.buscarClientePorId(idClient);
+			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
+			FullBalance balance = contaCorrenteService.getFullBalance(contasCorrentes);
 			return ResponseEntity.ok().body(Optional.ofNullable(balance));
 		}catch(ObjectNotFoundException e){
 			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
