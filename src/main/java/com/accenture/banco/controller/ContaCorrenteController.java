@@ -62,18 +62,30 @@ public class ContaCorrenteController {
 	
 	//deposito
 	@RequestMapping(value="/deposito/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> depositar(@RequestBody Valor objBody, @PathVariable Integer id) {
-		objBody.setId(id);
-		contaCorrenteService.deposito(objBody);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<String> depositar(@RequestBody Valor objBody, @PathVariable Integer id) throws Exception {
+		try {
+			objBody.setValor(Math.abs(objBody.getValor()));
+			objBody.setId(id);
+			contaCorrenteService.deposito(objBody);
+			return ResponseEntity.ok().body("Sucesso ao depositar");
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 	//saque
 	@RequestMapping(value="/saque/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> sacar(@RequestBody Valor objBody, @PathVariable Integer id) {
-		objBody.setId(id);
-		contaCorrenteService.saque(objBody);
-		return ResponseEntity.noContent().build();
+	public ResponseEntity<String> sacar(@RequestBody Valor objBody, @PathVariable Integer id) {
+		try{
+			objBody.setValor(Math.abs(objBody.getValor()));
+			objBody.setId(id);
+			Boolean result = contaCorrenteService.saque(objBody);
+			return result ? ResponseEntity.ok().body("Saque Efetuado com sucesso!") : ResponseEntity.ok().body("Saldo insuficiente");
+		}catch(NumberFormatException e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}catch(Exception e){
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 	/*

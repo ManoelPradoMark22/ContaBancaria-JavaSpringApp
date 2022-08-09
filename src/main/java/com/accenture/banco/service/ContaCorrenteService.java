@@ -36,15 +36,22 @@ public class ContaCorrenteService {
 		return contaCorrente.orElseThrow(() -> new ObjectNotFoundException(null, "Conta não encontrada!"));
 	}
 	
-	public ContaCorrente deposito(Valor objBody) {
+	public ContaCorrente deposito(Valor objBody){
 		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
 		contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() + objBody.getValor());
-		return salvar(contaCorrente); 
+		return salvar(contaCorrente);
 	}
 	
-	public ContaCorrente saque(Valor objBody) {
+	public Boolean saque(Valor objBody) {
 		ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
-		contaCorrente.setContaCorrenteSaldo(contaCorrente.getContaCorrenteSaldo() - objBody.getValor());
-		return salvar(contaCorrente); 
+		double valorEmConta = contaCorrente.getContaCorrenteSaldo();
+		double valorSaque = objBody.getValor();
+		if(valorEmConta<valorSaque) {
+			return false;
+		}else {
+			contaCorrente.setContaCorrenteSaldo(valorEmConta - valorSaque);
+			salvar(contaCorrente);
+			return true;
+		}
 	}
 }
