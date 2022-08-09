@@ -43,7 +43,7 @@ public class ContaCorrenteController {
 	public ResponseEntity<Optional> buscaPorCpf(@PathVariable int id) throws ObjectNotFoundException{
 		try {
 			Cliente cliente = clienteService.buscarClientePorId(id);
-			Optional<List<ContaCorrente>> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
+			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
 			return ResponseEntity.ok().body(Optional.ofNullable(contasCorrentes));
 		}catch(ObjectNotFoundException e){
 			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
@@ -57,8 +57,23 @@ public class ContaCorrenteController {
 	public ResponseEntity<Optional> buscaPorCpf(@PathVariable String cpf) throws ObjectNotFoundException{
 		try {
 			Cliente cliente = clienteService.buscarClientePorCpf(cpf);
-			Optional<List<ContaCorrente>> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
+			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
 			return ResponseEntity.ok().body(Optional.ofNullable(contasCorrentes));
+		}catch(ObjectNotFoundException e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}catch(Exception e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}
+	}
+	
+	//Balanço da(s) conta(s)
+	@RequestMapping(value="/balance/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Optional> getBalance(@PathVariable int id) throws ObjectNotFoundException{
+		try {
+			Cliente cliente = clienteService.buscarClientePorId(id);
+			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
+			double balance = contaCorrenteService.getBalance(contasCorrentes);
+			return ResponseEntity.ok().body(Optional.ofNullable(balance));
 		}catch(ObjectNotFoundException e){
 			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
 		}catch(Exception e){

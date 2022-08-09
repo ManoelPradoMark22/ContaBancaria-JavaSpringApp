@@ -12,6 +12,6 @@ import com.accenture.banco.entity.ContaCorrente;
 @Repository
 public interface ContaCorrenteRepo extends JpaRepository<ContaCorrente, Integer>{
 	
-	Optional<List<ContaCorrente>> findAllByCliente(Cliente cliente);
+	List<ContaCorrente> findAllByCliente(Cliente cliente);
 	 //List<ContaCorrente> findByCliente(Cliente cliente);
 }

@@ -30,8 +30,8 @@ public class ContaCorrenteService {
 		return (List<ContaCorrente>) contaCorrenteRepo.findAll();
 	}
 	
-	public Optional<List<ContaCorrente>> buscarContasPorCliente(Cliente cliente) throws ObjectNotFoundException{
-		Optional<List<ContaCorrente>> contaCorrente = contaCorrenteRepo.findAllByCliente(cliente);
+	public List<ContaCorrente> buscarContasPorCliente(Cliente cliente) throws ObjectNotFoundException{
+		List<ContaCorrente> contaCorrente = contaCorrenteRepo.findAllByCliente(cliente);
 		return Optional.ofNullable(contaCorrente).orElseThrow(() -> new ObjectNotFoundException(null, "Contas não encontradas para o dado indicado!"));
 	}
 	
@@ -42,6 +42,14 @@ public class ContaCorrenteService {
 	public ContaCorrente buscarContaPorId(Integer id) throws ObjectNotFoundException{
 		Optional<ContaCorrente> contaCorrente = contaCorrenteRepo.findById(id);
 		return contaCorrente.orElseThrow(() -> new ObjectNotFoundException(null, "Conta não encontrada!"));
+	}
+	
+	public double getBalance(List<ContaCorrente> lista) {
+		double saldo=0;
+		for(ContaCorrente conta : lista) {
+			saldo += conta.getContaCorrenteSaldo();
+		}
+		return saldo;
 	}
 	
 	public String formatarNumero(double numero) {
