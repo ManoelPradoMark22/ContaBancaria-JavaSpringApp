@@ -20,6 +20,11 @@ public class ClienteService {
 		return (List<Cliente>) clienteRepo.findAll();
 	}
 	
+	public Cliente buscarClientePorId(int id) throws ObjectNotFoundException{
+		Optional<Cliente> cliente = clienteRepo.findById(id);
+		return cliente.orElseThrow(() -> new ObjectNotFoundException(null, "Cliente não encontrado!"));
+	}
+	
 	public Cliente buscarClientePorCpf(String cpf) throws ObjectNotFoundException{
 		Optional<Cliente> cliente = clienteRepo.findByClienteCPF(cpf);
 		return cliente.orElseThrow(() -> new ObjectNotFoundException(null, "Cliente não encontrado!"));

@@ -13,4 +13,5 @@ public interface ClienteRepo extends CrudRepository<Cliente, Integer>{
 	boolean existsByClienteCPF(String clienteCPF);
 	
 	Optional<Cliente> findByClienteCPF(String cpf);
+	Optional<Cliente> findById(int idCliente);
 }

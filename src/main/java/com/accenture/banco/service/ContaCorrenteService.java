@@ -32,7 +32,7 @@ public class ContaCorrenteService {
 	
 	public Optional<List<ContaCorrente>> buscarContasPorCliente(Cliente cliente) throws ObjectNotFoundException{
 		Optional<List<ContaCorrente>> contaCorrente = contaCorrenteRepo.findAllByCliente(cliente);
-		return Optional.ofNullable(contaCorrente).orElseThrow(() -> new ObjectNotFoundException(null, "Contas não encontradas para o cpf indicado!"));
+		return Optional.ofNullable(contaCorrente).orElseThrow(() -> new ObjectNotFoundException(null, "Contas não encontradas para o dado indicado!"));
 	}
 	
 	public ContaCorrente salvar(ContaCorrente contacorrente) {
@@ -46,7 +46,7 @@ public class ContaCorrenteService {
 	
 	public String formatarNumero(double numero) {
 	       return new DecimalFormat("#,##0.00").format(numero);
-	     }
+	}
 	
 	public String deposito(Valor objBody){
 		try {

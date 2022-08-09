@@ -38,8 +38,22 @@ public class ContaCorrenteController {
 		return ResponseEntity.ok().body(contascorrentes);
 	}	
 	
+	//Pesquisar Contas pelo id do cliente
+	@RequestMapping(value="/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Optional> buscaPorCpf(@PathVariable int id) throws ObjectNotFoundException{
+		try {
+			Cliente cliente = clienteService.buscarClientePorId(id);
+			Optional<List<ContaCorrente>> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
+			return ResponseEntity.ok().body(Optional.ofNullable(contasCorrentes));
+		}catch(ObjectNotFoundException e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}catch(Exception e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}
+	}
+	
 	//Pesquisar Contas pelo cpf do cliente
-	@RequestMapping(value="/{cpf}", method = RequestMethod.GET)
+	@RequestMapping(value="/search/{cpf}", method = RequestMethod.GET)
 	public ResponseEntity<Optional> buscaPorCpf(@PathVariable String cpf) throws ObjectNotFoundException{
 		try {
 			Cliente cliente = clienteService.buscarClientePorCpf(cpf);
