@@ -19,6 +19,7 @@ import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.service.ClienteService;
 import com.accenture.banco.service.ContaCorrenteService;
 import com.accenture.banco.util.FullBalance;
+import com.accenture.banco.util.InOutBalance;
 import com.accenture.banco.util.Valor;
 
 @RestController
@@ -89,6 +90,21 @@ public class ContaCorrenteController {
 			Cliente cliente = clienteService.buscarClientePorId(idClient);
 			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
 			FullBalance balance = contaCorrenteService.getFullBalance(contasCorrentes);
+			return ResponseEntity.ok().body(Optional.ofNullable(balance));
+		}catch(ObjectNotFoundException e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}catch(Exception e){
+			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
+		}
+	}
+	
+	//Entradas e saidas da(s) conta(s) - por clientId
+	@RequestMapping(value="/inout/{idClient}", method = RequestMethod.GET)
+	public ResponseEntity<Optional> inOutBalance(@PathVariable int idClient) throws ObjectNotFoundException{
+		try {
+			Cliente cliente = clienteService.buscarClientePorId(idClient);
+			List<ContaCorrente> contasCorrentes = contaCorrenteService.buscarContasPorCliente(cliente);
+			InOutBalance balance = contaCorrenteService.getInOutBalance(contasCorrentes);
 			return ResponseEntity.ok().body(Optional.ofNullable(balance));
 		}catch(ObjectNotFoundException e){
 			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));

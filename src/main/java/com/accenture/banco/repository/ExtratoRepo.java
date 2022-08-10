@@ -12,5 +12,5 @@ import com.accenture.banco.entity.Extrato;
 
 @Repository
 public interface ExtratoRepo extends CrudRepository<Extrato, Integer>{
-	Optional<List<Extrato>> findAllByContaCorrente(ContaCorrente contaCorrente);
+	List<Extrato> findAllByContaCorrente(ContaCorrente contaCorrente);
 }

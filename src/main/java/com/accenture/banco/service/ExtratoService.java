@@ -34,8 +34,8 @@ public class ExtratoService {
 		salvar(extrato);
 	}
 	
-	public Optional<List<Extrato>> buscarExtratosPorConta(ContaCorrente contaCorrente) throws ObjectNotFoundException{
-		Optional<List<Extrato>> extratos = extratoRepo.findAllByContaCorrente(contaCorrente);
+	public List<Extrato> buscarExtratosPorConta(ContaCorrente contaCorrente) throws ObjectNotFoundException{
+		List<Extrato> extratos = extratoRepo.findAllByContaCorrente(contaCorrente);
 		return Optional.ofNullable(extratos).orElseThrow(() -> new ObjectNotFoundException(null, "Extratos não encontradas para a conta indicada!"));
 	}
 }

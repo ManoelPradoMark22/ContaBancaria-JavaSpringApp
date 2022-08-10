@@ -17,6 +17,7 @@ import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.repository.ContaCorrenteRepo;
 import com.accenture.banco.repository.ExtratoRepo;
 import com.accenture.banco.util.FullBalance;
+import com.accenture.banco.util.InOutBalance;
 import com.accenture.banco.util.Valor;
 
 @Service
@@ -72,6 +73,32 @@ public class ContaCorrenteService {
 		
 		
 		return fullbal;
+	}
+	
+	public InOutBalance getInOutBalance(List<ContaCorrente> lista) {
+		double saldo=0;
+		double entradas = 0;
+		double saidas = 0;
+		
+		for(ContaCorrente conta : lista) {
+			saldo += conta.getContaCorrenteSaldo();
+			
+			List<Extrato> extratos = extratoService.buscarExtratosPorConta(conta);
+			for(Extrato extrato : extratos) {
+				if(extrato.getOperacao().equals("deposito")) {
+					entradas += extrato.getValorOperacao();
+				}else {
+					saidas += extrato.getValorOperacao();
+				}
+			}
+		}
+		
+		InOutBalance balance = new InOutBalance();
+		balance.setValorTotal(saldo);
+		balance.setEntradas(entradas);
+		balance.setSaidas(saidas);
+		
+		return balance;
 	}
 	
 	public String formatarNumero(double numero) {

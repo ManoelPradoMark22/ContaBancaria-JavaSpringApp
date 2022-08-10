@@ -42,7 +42,7 @@ public class ExtratoController {
 	public ResponseEntity<Optional> buscaPorCpf(@PathVariable int id) throws ObjectNotFoundException{
 		try {
 			ContaCorrente contaCorrente = contaCorrenteService.buscarContaPorId(id);
-			Optional<List<Extrato>> extratos = extratoService.buscarExtratosPorConta(contaCorrente);
+			List<Extrato> extratos = extratoService.buscarExtratosPorConta(contaCorrente);
 			return ResponseEntity.ok().body(Optional.ofNullable(extratos));
 		}catch(ObjectNotFoundException e){
 			return ResponseEntity.badRequest().body(Optional.ofNullable(e.getMessage()));
