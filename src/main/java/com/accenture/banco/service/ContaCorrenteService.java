@@ -49,12 +49,16 @@ public class ContaCorrenteService {
 		return contaCorrente.orElseThrow(() -> new ObjectNotFoundException(null, "Conta não encontrada!"));
 	}
 	
+	public double casasDecimais(double numero) {
+	       return (Math.round(numero*100.0)/100.0);
+	}
+	
 	public double getBalance(List<ContaCorrente> lista) {
 		double saldo=0;
 		for(ContaCorrente conta : lista) {
 			saldo += conta.getContaCorrenteSaldo();
 		}
-		return saldo;
+		return casasDecimais(saldo);
 	}
 	
 	public FullBalance getFullBalance(List<ContaCorrente> lista) {
@@ -70,7 +74,7 @@ public class ContaCorrenteService {
 		}
 		
 		FullBalance fullbal = new FullBalance();
-		fullbal.setValorTotal(saldo);
+		fullbal.setValorTotal(casasDecimais(saldo));
 		fullbal.setLista(contaCorr);
 		
 		
@@ -96,9 +100,9 @@ public class ContaCorrenteService {
 		}
 		
 		InOutBalance balance = new InOutBalance();
-		balance.setValorTotal(saldo);
-		balance.setEntradas(entradas);
-		balance.setSaidas(saidas);
+		balance.setValorTotal(casasDecimais(saldo));
+		balance.setEntradas(casasDecimais(entradas));
+		balance.setSaidas(casasDecimais(saidas));
 		
 		return balance;
 	}
@@ -121,19 +125,19 @@ public class ContaCorrenteService {
 			for(Extrato extrato : extratos) {				
 				if(extrato.getOperacao().equals("deposito") || extrato.getOperacao().equals("transferenciaEntrada")) {
 					entradas += extrato.getValorOperacao();
-					inOutAccount.setEntradas(inOutAccount.getEntradas() + extrato.getValorOperacao());
+					inOutAccount.setEntradas(casasDecimais(inOutAccount.getEntradas() + extrato.getValorOperacao()));
 				}else {
 					saidas += extrato.getValorOperacao();
-					inOutAccount.setSaidas(inOutAccount.getSaidas() + extrato.getValorOperacao());
+					inOutAccount.setSaidas(casasDecimais(inOutAccount.getSaidas() + extrato.getValorOperacao()));
 				}
 			}
 			inOutAccountList.add(inOutAccount);
 		}
 		
 		FullInOutBalance balance = new FullInOutBalance();
-		balance.setValorTotal(saldo);
-		balance.setEntradas(entradas);
-		balance.setSaidas(saidas);
+		balance.setValorTotal(casasDecimais(saldo));
+		balance.setEntradas(casasDecimais(entradas));
+		balance.setSaidas(casasDecimais(saidas));
 		balance.setLista(inOutAccountList);;
 		
 		return balance;
