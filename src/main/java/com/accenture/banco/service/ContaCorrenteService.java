@@ -85,7 +85,7 @@ public class ContaCorrenteService {
 			
 			List<Extrato> extratos = extratoService.buscarExtratosPorConta(conta);
 			for(Extrato extrato : extratos) {
-				if(extrato.getOperacao().equals("deposito")) {
+				if(extrato.getOperacao().equals("deposito") || extrato.getOperacao().equals("transferenciaEntrada")) {
 					entradas += extrato.getValorOperacao();
 				}else {
 					saidas += extrato.getValorOperacao();
@@ -136,7 +136,8 @@ public class ContaCorrenteService {
 				contaCorrenteOrigem.setContaCorrenteSaldo(novoSaldo);
 				salvar(contaCorrenteOrigem);
 				
-				extratoService.gerarExtrato(contaCorrenteOrigem, "transferencia", valorTransf);
+				extratoService.gerarExtrato(contaCorrenteOrigem, "transferenciaSaida", valorTransf);
+				extratoService.gerarExtrato(contaCorrenteDestino, "transferenciaEntrada", valorTransf);
 				
 				return "Tranferência de 'R$" + valorTransf +"' efetuada com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
 			}
