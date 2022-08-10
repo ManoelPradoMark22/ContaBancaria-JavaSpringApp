@@ -130,11 +130,23 @@ public class ContaCorrenteController {
 	}
 	
 	//Cadastrar Conta Corrente
-	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<String> inserircliente(@RequestBody ContaCorrente objcontacorrente) {
-		ContaCorrente contacorrente = contaCorrenteService.salvar(objcontacorrente);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(contacorrente.getIdContaCorrente()).toUri();
-		return ResponseEntity.created(uri).build();
+	@RequestMapping(value="/{idClient}", method = RequestMethod.POST)
+	public ResponseEntity<String> inserircliente(@PathVariable int idClient) {
+		try {
+			
+			Cliente cliente = clienteService.buscarClientePorId(idClient);
+			
+			if(!clienteService.checkExistingClient(cliente)) throw new Exception("Cliente inexistente!");
+			
+			ContaCorrente cc = new ContaCorrente();
+			cc.setCliente(cliente);
+			cc.setContaCorrenteSaldo(0.0);
+			ContaCorrente contacorrente = contaCorrenteService.salvar(cc);
+			URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(contacorrente.getIdContaCorrente()).toUri();
+			return ResponseEntity.created(uri).build();
+		}catch(Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 	}
 	
 	//deposito

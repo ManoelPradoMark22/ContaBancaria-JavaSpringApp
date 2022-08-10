@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.accenture.banco.entity.Cliente;
+import com.accenture.banco.entity.ContaCorrente;
 import com.accenture.banco.repository.ClienteRepo;
 
 @Service
@@ -32,6 +33,10 @@ public class ClienteService {
 	
 	public Cliente salvar(Cliente cliente) {
 		return clienteRepo.save(cliente);
+	}
+	
+	public Boolean checkExistingClient(Cliente cliente){
+		return clienteRepo.existsByIdCliente(cliente.getIdCliente());
 	}
 	
 	public Boolean checkExistingCpf(String cpf){

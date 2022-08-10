@@ -49,7 +49,7 @@ public class ContaCorrenteService {
 		return contaCorrente.orElseThrow(() -> new ObjectNotFoundException(null, "Conta não encontrada!"));
 	}
 	
-	public double casasDecimais(double numero) {
+	public double formatCasasDecimais(double numero) {
 	       return (Math.round(numero*100.0)/100.0);
 	}
 	
@@ -58,7 +58,7 @@ public class ContaCorrenteService {
 		for(ContaCorrente conta : lista) {
 			saldo += conta.getContaCorrenteSaldo();
 		}
-		return casasDecimais(saldo);
+		return formatCasasDecimais(saldo);
 	}
 	
 	public FullBalance getFullBalance(List<ContaCorrente> lista) {
@@ -74,7 +74,7 @@ public class ContaCorrenteService {
 		}
 		
 		FullBalance fullbal = new FullBalance();
-		fullbal.setValorTotal(casasDecimais(saldo));
+		fullbal.setValorTotal(formatCasasDecimais(saldo));
 		fullbal.setLista(contaCorr);
 		
 		
@@ -100,9 +100,9 @@ public class ContaCorrenteService {
 		}
 		
 		InOutBalance balance = new InOutBalance();
-		balance.setValorTotal(casasDecimais(saldo));
-		balance.setEntradas(casasDecimais(entradas));
-		balance.setSaidas(casasDecimais(saidas));
+		balance.setValorTotal(formatCasasDecimais(saldo));
+		balance.setEntradas(formatCasasDecimais(entradas));
+		balance.setSaidas(formatCasasDecimais(saidas));
 		
 		return balance;
 	}
@@ -125,26 +125,22 @@ public class ContaCorrenteService {
 			for(Extrato extrato : extratos) {				
 				if(extrato.getOperacao().equals("deposito") || extrato.getOperacao().equals("transferenciaEntrada")) {
 					entradas += extrato.getValorOperacao();
-					inOutAccount.setEntradas(casasDecimais(inOutAccount.getEntradas() + extrato.getValorOperacao()));
+					inOutAccount.setEntradas(formatCasasDecimais(inOutAccount.getEntradas() + extrato.getValorOperacao()));
 				}else {
 					saidas += extrato.getValorOperacao();
-					inOutAccount.setSaidas(casasDecimais(inOutAccount.getSaidas() + extrato.getValorOperacao()));
+					inOutAccount.setSaidas(formatCasasDecimais(inOutAccount.getSaidas() + extrato.getValorOperacao()));
 				}
 			}
 			inOutAccountList.add(inOutAccount);
 		}
 		
 		FullInOutBalance balance = new FullInOutBalance();
-		balance.setValorTotal(casasDecimais(saldo));
-		balance.setEntradas(casasDecimais(entradas));
-		balance.setSaidas(casasDecimais(saidas));
+		balance.setValorTotal(formatCasasDecimais(saldo));
+		balance.setEntradas(formatCasasDecimais(entradas));
+		balance.setSaidas(formatCasasDecimais(saidas));
 		balance.setLista(inOutAccountList);;
 		
 		return balance;
-	}
-	
-	public String formatarNumero(double numero) {
-	       return new DecimalFormat("#,##0.00").format(numero);
 	}
 	
 	public String deposito(Valor objBody){
@@ -157,7 +153,7 @@ public class ContaCorrenteService {
 			
 			extratoService.gerarExtrato(contaCorrente, "deposito", valorDepositado);
 			
-			return "Depósito de 'R$" + valorDepositado +"' efetuado com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
+			return "Depósito de 'R$" + valorDepositado +"' efetuado com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.";
 		}catch(Exception e) {
 			return e.getMessage();
 		}
@@ -181,7 +177,7 @@ public class ContaCorrenteService {
 				extratoService.gerarExtrato(contaCorrenteOrigem, "transferenciaSaida", valorTransf);
 				extratoService.gerarExtrato(contaCorrenteDestino, "transferenciaEntrada", valorTransf);
 				
-				return "Tranferência de 'R$" + valorTransf +"' efetuada com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
+				return "Tranferência de 'R$" + valorTransf +"' efetuada com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.";
 			}
 		}catch(Exception e) {
 			return e.getMessage();
@@ -200,7 +196,7 @@ public class ContaCorrenteService {
 				contaCorrente.setContaCorrenteSaldo(novoSaldo);
 				salvar(contaCorrente);
 				extratoService.gerarExtrato(contaCorrente, "saque", valorSaque);
-				return "Saque de 'R$" + valorSaque +"' efetuado com sucesso! Novo saldo: 'R$" + formatarNumero(novoSaldo) +"'.";
+				return "Saque de 'R$" + valorSaque +"' efetuado com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.";
 			}
 		}catch(Exception e) {
 			return e.getMessage();
