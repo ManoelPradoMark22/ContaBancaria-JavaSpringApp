@@ -35,8 +35,8 @@ public class ClienteService {
 		return clienteRepo.save(cliente);
 	}
 	
-	public Boolean checkExistingClient(Cliente cliente){
-		return clienteRepo.existsByIdCliente(cliente.getIdCliente());
+	public Boolean checkExistingClient(int idCliente){
+		return clienteRepo.existsByIdCliente(idCliente);
 	}
 	
 	public Boolean checkExistingCpf(String cpf){

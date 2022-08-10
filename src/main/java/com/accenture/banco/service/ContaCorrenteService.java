@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -143,7 +144,7 @@ public class ContaCorrenteService {
 		return balance;
 	}
 	
-	public String deposito(Valor objBody){
+	public ResponseEntity<String> deposito(Valor objBody){
 		try {
 			ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
 			double valorDepositado = objBody.getValor();
@@ -152,21 +153,20 @@ public class ContaCorrenteService {
 			salvar(contaCorrente);
 			
 			extratoService.gerarExtrato(contaCorrente, "deposito", valorDepositado);
-			
-			return "Depósito de 'R$" + valorDepositado +"' efetuado com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.";
+			return ResponseEntity.ok().body("Depósito de 'R$" + valorDepositado +"' efetuado com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.");
 		}catch(Exception e) {
-			return e.getMessage();
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	
-	public String transferencia(Valor objBody, int idDestino) {		
+	public ResponseEntity<String> transferencia(Valor objBody, int idDestino) {		
 		try {
 			ContaCorrente contaCorrenteOrigem = buscarContaPorId(objBody.getId());
 			ContaCorrente contaCorrenteDestino = buscarContaPorId(idDestino);
 			double valorEmContaOrigem = contaCorrenteOrigem.getContaCorrenteSaldo();
 			double valorTransf = objBody.getValor();
 			if(valorEmContaOrigem<valorTransf) {
-				return "Saldo insuficiente para a transferência! Seu saldo é: R$" + valorEmContaOrigem;
+				return ResponseEntity.badRequest().body("Saldo insuficiente para a transferência! Seu saldo é: R$" + valorEmContaOrigem);
 			}else {
 				contaCorrenteDestino.setContaCorrenteSaldo(contaCorrenteDestino.getContaCorrenteSaldo() + valorTransf);
 				salvar(contaCorrenteDestino);
@@ -177,29 +177,29 @@ public class ContaCorrenteService {
 				extratoService.gerarExtrato(contaCorrenteOrigem, "transferenciaSaida", valorTransf);
 				extratoService.gerarExtrato(contaCorrenteDestino, "transferenciaEntrada", valorTransf);
 				
-				return "Tranferência de 'R$" + valorTransf +"' efetuada com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.";
+				return ResponseEntity.ok().body("Tranferência de 'R$" + valorTransf +"' efetuada com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.");
 			}
 		}catch(Exception e) {
-			return e.getMessage();
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	
-	public String saque(Valor objBody) {
+	public ResponseEntity<String> saque(Valor objBody) {
 		try {
 			ContaCorrente contaCorrente = buscarContaPorId(objBody.getId());
 			double valorEmConta = contaCorrente.getContaCorrenteSaldo();
 			double valorSaque = objBody.getValor();
 			if(valorEmConta<valorSaque) {
-				return "Saldo insuficiente para o saque! Seu saldo é: R$" + valorEmConta;
+				return ResponseEntity.badRequest().body("Saldo insuficiente para o saque! Seu saldo é: R$" + valorEmConta);
 			}else {
 				double novoSaldo = valorEmConta - valorSaque;
 				contaCorrente.setContaCorrenteSaldo(novoSaldo);
 				salvar(contaCorrente);
 				extratoService.gerarExtrato(contaCorrente, "saque", valorSaque);
-				return "Saque de 'R$" + valorSaque +"' efetuado com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.";
+				return ResponseEntity.ok().body("Saque de 'R$" + valorSaque +"' efetuado com sucesso! Novo saldo: 'R$" + formatCasasDecimais(novoSaldo) +"'.");
 			}
 		}catch(Exception e) {
-			return e.getMessage();
+			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 }

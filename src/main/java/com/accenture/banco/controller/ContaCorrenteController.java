@@ -134,9 +134,9 @@ public class ContaCorrenteController {
 	public ResponseEntity<String> inserircliente(@PathVariable int idClient) {
 		try {
 			
-			Cliente cliente = clienteService.buscarClientePorId(idClient);
+			if(!clienteService.checkExistingClient(idClient)) throw new Exception("Cliente inexistente!");
 			
-			if(!clienteService.checkExistingClient(cliente)) throw new Exception("Cliente inexistente!");
+			Cliente cliente = clienteService.buscarClientePorId(idClient);
 			
 			ContaCorrente cc = new ContaCorrente();
 			cc.setCliente(cliente);
@@ -155,8 +155,7 @@ public class ContaCorrenteController {
 		try {
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(id);
-			String result = contaCorrenteService.deposito(objBody);
-			return ResponseEntity.ok().body(result);
+			return contaCorrenteService.deposito(objBody);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -168,8 +167,7 @@ public class ContaCorrenteController {
 		try {
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(idOrigem);
-			String result = contaCorrenteService.transferencia(objBody, idDestino);
-			return ResponseEntity.ok().body(result);
+			return contaCorrenteService.transferencia(objBody, idDestino);
 		}catch(Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -181,8 +179,7 @@ public class ContaCorrenteController {
 		try{
 			objBody.setValor(Math.abs(objBody.getValor()));
 			objBody.setId(id);
-			String result = contaCorrenteService.saque(objBody);
-			return ResponseEntity.ok().body(result);
+			return contaCorrenteService.saque(objBody);
 		}catch(NumberFormatException e){
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}catch(Exception e){
