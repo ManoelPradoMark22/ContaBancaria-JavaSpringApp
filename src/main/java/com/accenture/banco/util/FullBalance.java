@@ -5,8 +5,8 @@ import java.util.List;
 import com.accenture.banco.entity.ContaCorrente;
 
 public class FullBalance {
-	double valorTotal;
-	List<ContaCorrente> lista;
+	private double valorTotal;
+	private List<ContaCorrente> lista;
 	
 	public double getValorTotal() {
 		return valorTotal;

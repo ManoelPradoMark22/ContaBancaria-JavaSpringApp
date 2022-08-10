@@ -17,7 +17,9 @@ import com.accenture.banco.entity.Extrato;
 import com.accenture.banco.repository.ContaCorrenteRepo;
 import com.accenture.banco.repository.ExtratoRepo;
 import com.accenture.banco.util.FullBalance;
+import com.accenture.banco.util.FullInOutBalance;
 import com.accenture.banco.util.InOutBalance;
+import com.accenture.banco.util.ScopeFullInOutBalance;
 import com.accenture.banco.util.Valor;
 
 @Service
@@ -97,6 +99,42 @@ public class ContaCorrenteService {
 		balance.setValorTotal(saldo);
 		balance.setEntradas(entradas);
 		balance.setSaidas(saidas);
+		
+		return balance;
+	}
+	
+	public FullInOutBalance getFullInOutBalance(List<ContaCorrente> lista) {
+		double saldo=0;
+		double entradas = 0;
+		double saidas = 0;
+		
+		List<ScopeFullInOutBalance> inOutAccountList = new ArrayList<ScopeFullInOutBalance>();
+		
+		for(ContaCorrente conta : lista) {
+			saldo += conta.getContaCorrenteSaldo();
+			
+			List<Extrato> extratos = extratoService.buscarExtratosPorConta(conta);
+			
+			ScopeFullInOutBalance inOutAccount = new ScopeFullInOutBalance();
+			inOutAccount.setIdAccount(conta.getIdContaCorrente());
+			
+			for(Extrato extrato : extratos) {				
+				if(extrato.getOperacao().equals("deposito") || extrato.getOperacao().equals("transferenciaEntrada")) {
+					entradas += extrato.getValorOperacao();
+					inOutAccount.setEntradas(inOutAccount.getEntradas() + extrato.getValorOperacao());
+				}else {
+					saidas += extrato.getValorOperacao();
+					inOutAccount.setSaidas(inOutAccount.getSaidas() + extrato.getValorOperacao());
+				}
+			}
+			inOutAccountList.add(inOutAccount);
+		}
+		
+		FullInOutBalance balance = new FullInOutBalance();
+		balance.setValorTotal(saldo);
+		balance.setEntradas(entradas);
+		balance.setSaidas(saidas);
+		balance.setLista(inOutAccountList);;
 		
 		return balance;
 	}

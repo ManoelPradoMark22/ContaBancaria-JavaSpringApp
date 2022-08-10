@@ -4,11 +4,18 @@ import java.util.List;
 
 import com.accenture.banco.entity.ContaCorrente;
 
-public class InOutBalance {
+public class ScopeFullInOutBalance {
+	private int idAccount;
 	private double valorTotal;
 	private double entradas;
 	private double saidas;
 	
+	public int getIdAccount() {
+		return idAccount;
+	}
+	public void setIdAccount(int idAccount) {
+		this.idAccount = idAccount;
+	}
 	public double getValorTotal() {
 		return valorTotal;
 	}
@@ -28,3 +35,5 @@ public class InOutBalance {
 		this.saidas = saidas;
 	}
 }
+
+
