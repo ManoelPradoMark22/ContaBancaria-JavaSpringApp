@@ -132,6 +132,7 @@ public class ContaCorrenteService {
 					inOutAccount.setSaidas(formatCasasDecimais(inOutAccount.getSaidas() + extrato.getValorOperacao()));
 				}
 			}
+			inOutAccount.setValorTotal(formatCasasDecimais(inOutAccount.getEntradas() - inOutAccount.getSaidas()));
 			inOutAccountList.add(inOutAccount);
 		}
 		
