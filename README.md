@@ -37,13 +37,17 @@
 ### Equipe:
 
 <img src="./manoel.png" height="94" width="90" />
-[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ManoelPradoMark22/)
+<br
+[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/magdieline-sander-061707223)
 
 <img src="./magd.png" height="94" width="99" />
+<br
 [![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/magdieline-sander-061707223/)
 
 <img src="./marco.png" height="94" width="84" />
+<br
 [![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/tulinh0/)
 
 <img src="./luna.png" height="94" width="84" />
+<br
 [![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/luna-maria-465a111b8/)
