@@ -9,7 +9,7 @@
 
 ---
 
-![modelo](./modelo logico.png)
+![modelo](./modeloLogico.png)
 
 ---
 
