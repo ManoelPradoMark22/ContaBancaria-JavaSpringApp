@@ -1,5 +1,5 @@
 ## 4Bank - API Spring-Java
-<img src="./logo" width="82" height="44"/>
+<img src="./logo.png" width="82" height="44"/>
 
 ---
 
