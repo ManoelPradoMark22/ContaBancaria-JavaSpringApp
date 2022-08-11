@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "0b083705-d91e-4f8e-83d4-50988d0e6a9d",
+		"name": "JAVA-spring - Banco - localhost",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21350775"
+	},
+	"item": [
+		{
+			"name": "Agência",
+			"item": [
+				{
+					"name": "Criar agencia",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeAgencia\": \"Centro Bh\",\r\n    \"endereco\": \"Centro - Belo Horizonte - Rua 11 - n1245\",\r\n    \"telefone\": \"7188994477\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ec2Dns}}/agencia",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"agencia"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar agencias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/agencia",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"agencia"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente",
+			"item": [
+				{
+					"name": "Criar Cliente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clienteNome\": \"Manoel\",\r\n    \"clienteCPF\": \"06350390520\",\r\n    \"clienteFone\": \"31245123\",\r\n    \"styleId\": \"sport\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ec2Dns}}/cliente",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/cliente",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "pesquisar Cliente por Cpf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/cliente",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"cliente"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conta",
+			"item": [
+				{
+					"name": "+ gets",
+					"item": [
+						{
+							"name": "filtar contas por id do cliente",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ec2Dns}}/conta/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar Balance por clientId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ec2Dns}}/conta/balance/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"balance",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get FULL Balance Accounts by clientId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ec2Dns}}/conta/fullbalance/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"fullbalance",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get inOut Balance Accounts by clientId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{ec2Dns}}/conta/fullbalance/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"fullbalance",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Transactions",
+					"item": [
+						{
+							"name": "Depositar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valor\": 1000.50\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ec2Dns}}/conta/deposito/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"deposito",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Transferência",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valor\": 450\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ec2Dns}}/conta/transferencia/2/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"transferencia",
+										"2",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Sacar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"valor\": 30.40\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{ec2Dns}}/conta/saque/1",
+									"host": [
+										"{{ec2Dns}}"
+									],
+									"path": [
+										"conta",
+										"saque",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Criar ContaCorrente",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ec2Dns}}/conta/2",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"conta",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar contas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/conta",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"conta"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filtrar contas por cpf",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/conta/search/14227336023",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"conta",
+								"search",
+								"14227336023"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Balanço io/out by clientId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/conta/fullinout/1",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"conta",
+								"fullinout",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Extrato",
+			"item": [
+				{
+					"name": "listar extratos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/extrato",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"extrato"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listar extratos de uma conta",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/extrato/1",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"extrato",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conta Solidária",
+			"item": [
+				{
+					"name": "listar Contas Solidárias",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{ec2Dns}}/contasolidaria",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"contasolidaria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Conta Solidária",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomeCausa\": \"Chuvas fortes em Recife\",\r\n    \"descricaoCausa\": \"Faça sua contribuição transferindo um valor para ajudar as famílias afetadas com o forte temporal que assolou Recife!\",\r\n    \"contaCorrente\": {\r\n        \"idContaCorrente\": 3\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{ec2Dns}}/contasolidaria",
+							"host": [
+								"{{ec2Dns}}"
+							],
+							"path": [
+								"contasolidaria"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
