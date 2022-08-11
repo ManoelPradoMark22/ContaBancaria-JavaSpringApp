@@ -36,26 +36,18 @@
 
 ### Equipe:
 
-<b>Manoel Prado</b>
-<br />
 <img src="./manoel.png" height="94" width="90" />
 <br />
 [Linkedin](https://www.linkedin.com/in/ManoelPradoMark22/)
 
-<b>Magdieline Sander</b>
-<br />
 <img src="./magd.png" height="94" width="99" />
 <br />
 [Linkedin](https://www.linkedin.com/in/magdieline-sander-061707223/)
 
-<b>Marco Tulio</b>
-<br />
 <img src="./marco.png" height="94" width="84" />
 <br />
 [Linkedin](https://www.linkedin.com/in/tulinh0/)
 
-<b>Luna Maria</b>
-<br />
 <img src="./luna.png" height="94" width="84" />
 <br />
 [Linkedin](https://www.linkedin.com/in/luna-maria-465a111b8/)
