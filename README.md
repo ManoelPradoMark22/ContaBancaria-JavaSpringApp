@@ -40,7 +40,7 @@
 <br />
 <img src="./manoel.png" height="94" width="90" />
 <br />
-[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/magdieline-sander-061707223)
+[![Linkedin](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/manoelpradomark22/)
 
 <b>Magdieline Sander</b>
 <br />
