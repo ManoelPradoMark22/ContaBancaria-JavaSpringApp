@@ -9,10 +9,6 @@
 
 ---
 
-![modelo](./modeloLogico.png)
-
----
-
 ### Requisitos - Deve ser possível...
 
 - [x] ...criar/Listar Agência
@@ -41,6 +37,10 @@
 - [x] ...sacar/transferir com saldo insuficiente
 - [x] ...ter uma conta duplicada em ContasSolidárias
 - [x] ...cadastrar um cliente com cpf inválido
+
+---
+
+![modelo](./modeloLogico.png)
 
 ---
 
